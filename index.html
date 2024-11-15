@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky 7 Game</title>
+</head>
+
+<body>
+    <h2> Welcome to Lucky 7 Game</h2>
+    <input type="checkbox" name="play" id="play" value="Below 7" groupname="play"> Below 7
+    <input type="checkbox" name="play" id="play" value="7" groupname="play"> 7
+    <input type="checkbox" name="play" id="play" value="Above 7" groupname="play"> Above 7
+
+    <button id="play" onclick="play()">play</button>
+
+    <h3> Game Result</h3>
+    <h4> Dice 1 : </h4> <span for="" id="dice1"></span>
+    <h4> Dice 2 : </h4> <span for="" id="dice2"></span>
+    <h4> Total : </h4> <span for="" id="total"></span>
+
+    <h4> <span id="message"></span></h4>    
+    <div>
+        <div>
+            <button id="reset"> Reset & Play </button>
+            <button id="cn_play"> Continue Playing </button>
+        </div>
+    </div>
+
+</body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+
+    //get value of selected checkbox and display in console
+    function play() {
+        var checkboxes = document.getElementsByName('play');
+        var selectedValues = '';
+        let count=0;
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                selectedValues = (checkboxes[i].value);
+            count++;
+            }
+            if (count > 1){
+                alert("Please select only one option");
+                return false;
+            }
+        }
+      dice1= Math.floor(Math.random() * 6) + 1;
+      dice2 = Math.floor(Math.random() * 6) + 1;
+      Total = dice1 + dice2;
+
+      document.getElementById('dice1').value = dice1;
+      document.getElementById('dice2').value = dice2;
+      document.getElementById('total').value = Total;
+        console.log(selectedValues,Total);
+    // ajax call for php file 
+
+    $ajax({ url: 'dice_calculation.php',
+                type: 'POST',
+                data: {selectedValues: selectedValues, Total: Total},
+                success: function(response) {
+                    console.log(response);
+                }
+        
+    });
+</script>
+
+</html>
